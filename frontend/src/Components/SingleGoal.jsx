@@ -5,8 +5,10 @@ function SingleGoal({ goal }) {
   return (
     <div className="goal">
       {goal.text}
-      <FaEdit className="edit-icons"/>
-      <FaTrashAlt className="delete-icons" />
+      <div>
+        <FaEdit className="edit-icons" />
+        <FaTrashAlt className="delete-icons" />
+      </div>
     </div>
   );
 }

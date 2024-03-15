@@ -24,12 +24,18 @@ function RegisterForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const {data} = await axios.post(register, {name, email, password})
+    const { data } = await axios.post(register, { name, email, password });
 
-    if(data.user) {
-      navigate('/login')
+    if (data.user) {
+      navigate("/login");
     }
   };
+
+  const disabled =
+    name.length === 0 ||
+    email.length === 0 ||
+    password.length === 0 ||
+    password2.length === 0;
 
   return (
     <>
@@ -39,7 +45,6 @@ function RegisterForm() {
           <FaUser />
           Regiser{" "}
         </h1>
-        <p> Create an account </p>
       </section>
 
       <section className="form">
@@ -70,7 +75,7 @@ function RegisterForm() {
 
           <div className="form-group">
             <input
-              type="text"
+              type="password"
               name="password"
               id="password"
               className="form-control"
@@ -82,7 +87,7 @@ function RegisterForm() {
 
           <div className="form-group">
             <input
-              type="text"
+              type="password"
               name="password2"
               id="password2"
               className="form-control"
@@ -93,7 +98,11 @@ function RegisterForm() {
           </div>
 
           <div className="form-group">
-            <button type="submit" className="btn btn-block">
+            <button
+              type="submit"
+              className={disabled ? "btn-disabled  btn-block" : "btn btn-block"}
+              disabled={disabled}
+            >
               {" "}
               Submit{" "}
             </button>

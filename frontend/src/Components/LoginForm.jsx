@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
-import axios from 'axios'
+import axios from "axios";
 import { login } from "../constants";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,13 +23,15 @@ function LoginForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const {data} = await axios.post(login, {email, password})
+    const { data } = await axios.post(login, { email, password });
 
-    if(data.user) {
-      localStorage.setItem('TOKEN', data.user.token)
-      navigate('/')
+    if (data.user) {
+      localStorage.setItem("TOKEN", data.user.token);
+      navigate("/");
     }
   };
+
+  const disabled = email.length === 0 || password.length === 0;
 
   return (
     <>
@@ -57,7 +59,7 @@ function LoginForm() {
 
           <div className="form-group">
             <input
-              type="text"
+              type="password"
               name="password"
               id="password"
               className="form-control"
@@ -68,13 +70,19 @@ function LoginForm() {
           </div>
 
           <div className="form-group">
-            <button type="submit" className="btn btn-block">
+            <button
+              type="submit"
+              className={
+                disabled
+                  ? "btn-disabled  btn-block"
+                  : "btn btn-block"
+              }
+              disabled={disabled}
+            >
               {" "}
               Submit{" "}
             </button>
           </div>
-
-          {error && <p> {error}</p>}
         </form>
       </section>
     </>

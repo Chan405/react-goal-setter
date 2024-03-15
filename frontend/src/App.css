@@ -216,6 +216,22 @@ h3 {
   justify-content: center;
 }
 
+
+.btn-disabled {
+  padding: 10px 20px;
+  border: 1px solid #a16f83;
+  border-radius: 5px;
+  background: #a16f83;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  appearance: button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .btn svg {
   margin-right: 8px;
 }

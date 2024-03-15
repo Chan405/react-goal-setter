@@ -5,25 +5,30 @@ import { Link } from "react-router-dom";
 import { getUserInfo } from "../constants";
 
 function Header() {
-  const token = localStorage.getItem("TOKEN");
-  const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
 
   const fetchUserInfo = async () => {
-    if(token) {
-      const {data} = await axios.get(getUserInfo, {
+    
+      const { data } = await axios.get(getUserInfo, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if(data) {
-        setUser(data)
+      if (data) {
+        setUser(data);
       }
-    }
-  }
+    
+  };
 
   useEffect(() => {
-    fetchUserInfo();
-  }, []) 
+    setToken(localStorage.getItem('TOKEN'))
+    if(token) {
+       fetchUserInfo();
+    }
+    console.log('I am header')
+  }, [token]);
+
   return (
     <header className="header">
       <div className="logo">
@@ -52,12 +57,14 @@ function Header() {
               </Link>
             </li>
 
-            { user !== null && <li>
-              <Link>
-                {" "}
-                <FaUser /> {user.name} {" "}
-              </Link>
-            </li>}
+            {user !== null && (
+              <li>
+                <Link>
+                  {" "}
+                  <FaUser /> {user.name}{" "}
+                </Link>
+              </li>
+            )}
           </>
         )}
 
