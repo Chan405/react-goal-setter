@@ -65,7 +65,7 @@ const generateToken = (id) => {
 
 const getMe = async (request, response) => {
   const { _id, name, email } = request.user;
-  response.json({ message: "Get me" });
+  response.json({ _id, name, email });
 };
 
 module.exports = {

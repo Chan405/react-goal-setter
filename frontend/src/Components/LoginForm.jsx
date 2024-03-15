@@ -39,7 +39,6 @@ function LoginForm() {
           <FaSignInAlt />
           Login{" "}
         </h1>
-        <p> Login to your page </p>
       </section>
 
       <section className="form">

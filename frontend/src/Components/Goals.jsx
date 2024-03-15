@@ -21,10 +21,11 @@ function Goals() {
         fetchGoals()
     }, [])
 
-    console.log(goals)
   return (
     <>
     {goals.length > 0 && goals.map( goal => <SingleGoal key={goal.id} goal={goal}/>)}
+
+    {goals.length === 0 && <p className='empty-goals'> No goals yet. Create a new goal</p>}
     </>
   )
 }
