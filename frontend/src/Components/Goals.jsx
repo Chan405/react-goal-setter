@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { create_Goal, getGoals } from "../constants";
 import SingleGoal from "./SingleGoal";
 import GoalForm from "./GoalForm";
+import { useDispatch, useSelector } from "react-redux";
+import { goalsApi } from "../constants";
+import { deleteGoal } from "../features/goals/goalActions";
 function Goals() {
   const [goals, setGoals] = useState([]);
-  const token = localStorage.getItem("TOKEN");
+  const { token } = useSelector((state) => state.auth.userData);
+  const dispatch = useDispatch();
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token} `,
+    },
+  };
 
   const fetchGoals = async () => {
-    const { data } = await axios.get(getGoals, {
-      headers: {
-        Authorization: `Bearer ${token} `,
-      },
-    });
+    const { data } = await axios.get(goalsApi, config);
 
     if (data && data.length > 0) {
       setGoals(data);
@@ -20,18 +25,10 @@ function Goals() {
   };
 
   const createGoal = async (text) => {
-    const { data } = axios.post(
-      create_Goal,
-      { text },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
+    const { data } = axios.post(goalsApi, { text }, config);
     fetchGoals();
   };
+
   useEffect(() => {
     fetchGoals();
   }, []);

@@ -3,6 +3,8 @@ import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { register } from "../constants";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ function RegisterForm() {
     password: "",
     password2: "",
   });
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const { name, email, password, password2 } = formData;
@@ -24,10 +27,17 @@ function RegisterForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post(register, { name, email, password });
 
-    if (data.user) {
-      navigate("/login");
+    try {
+      const { data } = await axios.post(register, { name, email, password });
+      if (data.user) {
+        navigate("/login");
+      }
+    } catch (e) {
+      if (e.response && e.response.data && e.response.data.message) {
+        setError(e.response.data.message);
+      }
+      console.log(e);
     }
   };
 
@@ -46,6 +56,8 @@ function RegisterForm() {
           Regiser{" "}
         </h1>
       </section>
+
+      {error && <h3 className="error-msg"> {error}</h3>}
 
       <section className="form">
         <form onSubmit={onSubmit}>

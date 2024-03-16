@@ -3,14 +3,17 @@ import { FaSignInAlt } from "react-icons/fa";
 import axios from "axios";
 import { login } from "../constants";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../features/auth/authActions";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
 
   const { email, password } = formData;
 
@@ -23,11 +26,19 @@ function LoginForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post(login, { email, password });
 
-    if (data.user) {
-      localStorage.setItem("TOKEN", data.user.token);
-      navigate("/");
+    try {
+      const { data } = await axios.post(login, { email, password });
+      if (data.user) {
+        localStorage.setItem("userData", JSON.stringify(data.user));
+        dispatch(loginSuccess(data.user));
+        navigate("/");
+      }
+    } catch (e) {
+      if (e.response && e.response.data && e.response.data.message) {
+        setError(e.response.data.message);
+      }
+      console.log(e);
     }
   };
 
@@ -42,6 +53,7 @@ function LoginForm() {
           Login{" "}
         </h1>
       </section>
+      {error && <h3 className="error-msg"> {error}</h3>}
 
       <section className="form">
         <form onSubmit={onSubmit}>
@@ -72,11 +84,7 @@ function LoginForm() {
           <div className="form-group">
             <button
               type="submit"
-              className={
-                disabled
-                  ? "btn-disabled  btn-block"
-                  : "btn btn-block"
-              }
+              className={disabled ? "btn-disabled  btn-block" : "btn btn-block"}
               disabled={disabled}
             >
               {" "}
