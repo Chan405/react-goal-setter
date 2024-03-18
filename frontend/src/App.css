@@ -148,6 +148,36 @@ h3.error-msg {
   align-items: center;
 }
 
+.goal.disabled {
+  width: 100%;
+  background-color: #f4f4f4;
+  color: #fc0366;
+  margin: 10px 0;
+  padding: 10px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0.7;
+}
+
+.goal input {
+  background: none;
+  border: none;
+  outline: none;
+  color: #fc0366;
+  font-size: 16px;
+}
+
+.goal-tools {
+  display: flex;
+  align-items: center;
+}
+
+.goal-tools .time {
+  font-size: 14px;
+}
+
 .empty-goals {
   width: 100%;
   background-color: #f4f4f4;

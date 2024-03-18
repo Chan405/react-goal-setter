@@ -5,6 +5,7 @@ import { register } from "../constants";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { errorHandler } from "../utils/errorHandler";
 
 function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -34,10 +35,7 @@ function RegisterForm() {
         navigate("/login");
       }
     } catch (e) {
-      if (e.response && e.response.data && e.response.data.message) {
-        setError(e.response.data.message);
-      }
-      console.log(e);
+      errorHandler(e);
     }
   };
 

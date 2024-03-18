@@ -5,6 +5,8 @@ import { login } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../features/auth/authActions";
+import { toast } from "react-toastify";
+import { errorHandler } from "../utils/errorHandler";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -35,10 +37,7 @@ function LoginForm() {
         navigate("/");
       }
     } catch (e) {
-      if (e.response && e.response.data && e.response.data.message) {
-        setError(e.response.data.message);
-      }
-      console.log(e);
+      errorHandler(e);
     }
   };
 

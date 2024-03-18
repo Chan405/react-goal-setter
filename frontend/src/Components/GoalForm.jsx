@@ -1,17 +1,62 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  redirect,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import { goalsApi } from "../constants";
 
-function GoalForm({ createGoal }) {
-  const [text, setText] = useState("");
+function GoalForm({ createGoal, isEditing }) {
+  const { goalId } = useParams();
+  const { state } = useLocation();
+  const { token } = useSelector((state) => state.auth.userData);
+  const navigate = useNavigate();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token} `,
+    },
+  };
+
+  const [text, setText] = useState(
+    isEditing && state.goal ? state.goal.text : ""
+  );
+
+  const updateGoal = async (goalId, text) => {
+    try {
+      const { data } = await axios.put(
+        `${goalsApi}/${goalId}`,
+        { text },
+        config
+      );
+
+      navigate("/");
+    } catch (e) {
+      if (e.response && e.response.data && e.response.data.message) {
+        console.log(e);
+      }
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (text.trim().length > 0) {
+      if (!isEditing) {
+        createGoal(text);
+        setText("");
+      } else {
+        updateGoal(goalId, text);
+      }
+    }
+  };
 
   return (
     <section className="form">
       <form
         onSubmit={(e) => {
-          if (text.trim().length > 0) {
-            e.preventDefault();
-            createGoal(text);
-            setText("");
-          }
+          handleSubmit(e);
         }}
       >
         <div className="form-group">
@@ -34,7 +79,7 @@ function GoalForm({ createGoal }) {
             type="submit"
             disabled={text.trim().length === 0}
           >
-            Add Goal
+            {goalId ? "Update Goal" : "Add Goal"}
           </button>
         </div>
       </form>
