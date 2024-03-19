@@ -4,6 +4,7 @@ const User = require("../models/userModel");
 
 const handleRegister = async (request, response) => {
   const { name, email, password } = request.body;
+  // const profile = request.file;
 
   if (!name || !email || !password) {
     response
@@ -18,7 +19,11 @@ const handleRegister = async (request, response) => {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password, salt);
 
-      const user = await User.create({ name, email, password: hashPassword });
+      const user = await User.create({
+        name,
+        email,
+        password: hashPassword,
+      });
 
       if (user) {
         response
@@ -31,6 +36,7 @@ const handleRegister = async (request, response) => {
       response.status(400).json({ message: "User already exists" });
     }
   } catch (e) {
+    console.log("ERROR", e);
     response.status(400).json({ message: "Invalid User" });
   }
 };

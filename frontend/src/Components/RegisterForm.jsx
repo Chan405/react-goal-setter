@@ -13,8 +13,9 @@ function RegisterForm() {
     email: "",
     password: "",
     password2: "",
+    profile: null,
   });
-  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   const { name, email, password, password2 } = formData;
@@ -26,12 +27,25 @@ function RegisterForm() {
     }));
   };
 
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      profile: e.target.files[0],
+    });
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    // const userData = new FormData();
+    // userData.append("name", formData.name);
+    // userData.append("email", formData.email);
+    // userData.append("password", formData.password);
+    // userData.append("profile", formData.profile);
 
     try {
       const { data } = await axios.post(register, { name, email, password });
       if (data.user) {
+        console.log(data.user);
         navigate("/login");
       }
     } catch (e) {
@@ -54,9 +68,6 @@ function RegisterForm() {
           Regiser{" "}
         </h1>
       </section>
-
-      {error && <h3 className="error-msg"> {error}</h3>}
-
       <section className="form">
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -106,6 +117,17 @@ function RegisterForm() {
               onChange={onChange}
             />
           </div>
+
+          {/* <div className="form-group">
+            <input
+              type="file"
+              name="profile"
+              id="profile"
+              className="form-control"
+              placeholder="Choose profile"
+              onChange={handleFileChange}
+            />
+          </div> */}
 
           <div className="form-group">
             <button
