@@ -76,7 +76,7 @@ const deleteGoal = asyncHandler(async (request, response) => {
     if (goal.user.toString() !== loggedInUser.id.toString()) {
       response
         .status(401)
-        .json({ message: "Not aunthorized to update the goal" });
+        .json({ message: "Not aunthorized to delete the goal" });
     } else {
       await goal.deleteOne({ id: goalId });
       response.status(200).json({ id: request.params.id });
