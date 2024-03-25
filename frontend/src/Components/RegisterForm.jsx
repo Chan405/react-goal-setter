@@ -57,7 +57,8 @@ function RegisterForm() {
     name.length === 0 ||
     email.length === 0 ||
     password.length === 0 ||
-    password2.length === 0;
+    password2.length === 0 ||
+    password !== password2;
 
   return (
     <>
